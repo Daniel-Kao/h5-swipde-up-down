@@ -18,7 +18,7 @@ const Item = styled.div`
   width: 100%;
   min-height: 100%;
   color: white;
-  overflow-y: auto;
+  overflow-y: scroll;
 `;
 
 const initialState = { pos: 0, sliding: false, dir: NEXT, height: 0 };
@@ -32,12 +32,19 @@ const App = () => {
   const ref0 = useRef(null);
   const [state, dispatch] = React.useReducer(reducer, initialState);
 
-  // useEffect(() => {
-  //   console.log(ref0.current.clientHeight);
-  //   console.log(ref1.current.clientHeight);
-  //   console.log(ref2.current.clientHeight);
-  //   console.log(ref3.current.clientHeight);
-  // }, [ref0]);
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.addEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  function handleScroll() {
+    console.log("scrollheight");
+    console.log(ref0.current.clientHeight + ref0.current.offsetTop);
+    console.log("window");
+    console.log(window.scrollY + window.innerHeight);
+  }
 
   const slide = dir => {
     let nextHeight;
@@ -147,8 +154,8 @@ const App = () => {
           </Item>
         </CarouselContainer>
       </Wrapper>
-      <button onClick={() => slide("PREV")}>go prev</button>
-      <button onClick={() => slide("NEXT")}>go next</button>
+      {/* <button onClick={() => slide("PREV")}>go prev</button>
+      <button onClick={() => slide("NEXT")}>go next</button> */}
     </div>
   );
 };
